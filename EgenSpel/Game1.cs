@@ -12,6 +12,7 @@ namespace EgenSpel
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        Enemy enemy;
         Texture2D frog_texture;
 
         public Game1()
@@ -42,6 +43,7 @@ namespace EgenSpel
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player (Content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
+            enemy = new Enemy(Content.Load<Texture2D>("frogg"), 0, 0);
 
             // TODO: use this.Content to load your game content here
         }
@@ -65,6 +67,7 @@ namespace EgenSpel
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             player.Update(Window);
+            enemy.Update(Window);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -81,6 +84,7 @@ namespace EgenSpel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
