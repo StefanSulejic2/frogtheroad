@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
+    /// <summary>
+    /// Det här är huvudkoden för spelaren.
+    /// </summary>
     class Player : MovingObject
     {
+        /// <summary>
+        /// Basvariabler för player.
+        /// </summary>
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY)
         {
         }
+        /// <summary>
+        /// Kod för att spelaren ska kunna röra på sig. Key bindings och velocity.
+        /// </summary>
         public void Update(GameWindow window)
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -35,15 +44,11 @@ namespace EgenSpel
             if (vector.X < 0)
                 vector.X = 0;
             if (vector.X > window.ClientBounds.Width - texture.Width)
-            {
                 vector.X = window.ClientBounds.Width - texture.Width;
-            }
             if (vector.Y < 0)
                 vector.Y = 0;
             if (vector.Y > window.ClientBounds.Height - texture.Height)
-            {
                 vector.Y = window.ClientBounds.Height - texture.Height;
-            }
         }
     }
 }
