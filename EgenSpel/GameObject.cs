@@ -50,4 +50,12 @@ namespace EgenSpel
              this.speed.Y = speedY;
          }
     }
+    abstract class PhysicalObject : MovingObject
+    {
+        protected bool isAlive = true;
+        public PhysicalObject(Texture2D texture, float X,float , float speedX, float speedY): base(texture, X, Y speedX, speedY)
+        {
+
+        }
+    }
 }

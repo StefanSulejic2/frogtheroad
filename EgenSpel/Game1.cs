@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace EgenSpel
 {
@@ -12,7 +14,7 @@ namespace EgenSpel
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        Enemy enemy;
+        List<Enemy> enemies;
         Texture2D frog_texture;
 
         public Game1()
@@ -40,7 +42,16 @@ namespace EgenSpel
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player (Content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
-            enemy = new Enemy(Content.Load<Texture2D>("frogg"), 0, 0);
+            enemies = new List<Enemy>();
+            Random random = new Random();
+            Texture2D tmpSprite = Content.Load<Texture2D>("frogg");
+            for (int i = 0; i < 10; i++)
+            {
+                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
+                Enemy temp = new Enemy(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
         }
 
         /// <summary>
@@ -60,7 +71,8 @@ namespace EgenSpel
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             player.Update(Window);
-            enemy.Update(Window);
+            foreach (Enemy e in enemies)
+                e.Update(Window);
             
             base.Update(gameTime);
         }
@@ -74,7 +86,8 @@ namespace EgenSpel
 
             spriteBatch.Begin();
             player.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
+            foreach (Enemy e in enemies)
+                e.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
