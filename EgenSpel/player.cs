@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
+    
     /// <summary>
     /// Det här är huvudkoden för spelaren.
     /// </summary>
-    class Player : MovingObject
+    class Player : PhysicalObject
     {
+        int points = 0;
         /// <summary>
         /// Basvariabler för player.
         /// </summary>
@@ -50,5 +52,6 @@ namespace EgenSpel
             if (vector.Y > window.ClientBounds.Height - texture.Height)
                 vector.Y = window.ClientBounds.Height - texture.Height;
         }
+        public int Points { get { return points; } set { points = value; } }
     }
 }

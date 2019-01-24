@@ -11,7 +11,7 @@ namespace EgenSpel
     /// <summary>
     /// Kod för att skapa fiender.
     /// </summary>
-    class Enemy : MovingObject
+    class Enemy : PhysicalObject
     {
         /// <summary>
         /// isAlive innebär att den existerar, om inte den ändras till false.

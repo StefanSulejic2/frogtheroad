@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EgenSpel
 {
@@ -14,7 +15,10 @@ namespace EgenSpel
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        PrintText printText;
         List<Enemy> enemies;
+        List<Fly> fly;
+        Texture2D flySprite;
         Texture2D frog_texture;
 
         public Game1()
@@ -32,6 +36,7 @@ namespace EgenSpel
         protected override void Initialize()
         {
             base.Initialize();
+            fly = new List<Fly>();
         }
 
         /// <summary>
@@ -42,7 +47,9 @@ namespace EgenSpel
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player (Content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
+            printText = new PrintText(Content.Load<SpriteFont>("myFont"));
             enemies = new List<Enemy>();
+            flySprite = Content.Load<Texture2D>("frogg");
             Random random = new Random();
             Texture2D tmpSprite = Content.Load<Texture2D>("frogg");
             for (int i = 0; i < 10; i++)
@@ -75,6 +82,31 @@ namespace EgenSpel
                 e.Update(Window);
             
             base.Update(gameTime);
+
+            Random random = new Random();
+            int newfly = random.Next(1, 200);
+            if (newfly == 1)
+            {
+                int rndX = random.Next(0, Window.ClientBounds.Width - flySprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height - flySprite.Height);
+                fly.Add(new Fly (flySprite, rndX, rndY, gameTime));
+            }
+
+            foreach (Fly f in fly.ToList())
+            {
+                if (f.IsAlive)
+                {
+                    f.Update(gameTime);
+
+                    if (f.CheckCollision(player))
+                    {
+                        fly.Remove(f);
+                        player.Points++;
+                    }
+                }
+                else
+                    fly.Remove(f);
+            }
         }
 
         /// <summary>
@@ -88,8 +120,13 @@ namespace EgenSpel
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
+            foreach (Fly f in fly)
+                f.Draw(spriteBatch);
+            printText.Print("Points:" + player.Points, spriteBatch, 0, 0);
             spriteBatch.End();
             base.Draw(gameTime);
+
+            
         }
     }
 }
