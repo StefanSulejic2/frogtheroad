@@ -19,7 +19,6 @@ namespace EgenSpel
         List<Enemy> enemies;
         List<Fly> fly;
         Texture2D flySprite;
-        Texture2D frog_texture;
 
         public Game1()
         {
@@ -48,15 +47,23 @@ namespace EgenSpel
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player (Content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
+            flySprite = Content.Load<Texture2D>("ladybugg");
             enemies = new List<Enemy>();
-            flySprite = Content.Load<Texture2D>("frogg");
             Random random = new Random();
-            Texture2D tmpSprite = Content.Load<Texture2D>("frogg");
-            for (int i = 0; i < 10; i++)
+            Texture2D tmpSprite = Content.Load<Texture2D>("carL");
+            for (int i = 0; i < 2; i++)
             {
                 int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, Window.ClientBounds.Height / 2);
-                Enemy temp = new Enemy(tmpSprite, rndX, rndY);
+                carL temp = new carL(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+            tmpSprite = Content.Load<Texture2D>("carR");
+            for (int i = 0; i < 2; i++)
+            {
+                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
+                carR temp = new carR(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
         }
@@ -91,6 +98,9 @@ namespace EgenSpel
                 int rndY = random.Next(0, Window.ClientBounds.Height - flySprite.Height);
                 fly.Add(new Fly (flySprite, rndX, rndY, gameTime));
             }
+            else
+            {
+            }
 
             foreach (Fly f in fly.ToList())
             {
@@ -106,6 +116,17 @@ namespace EgenSpel
                 }
                 else
                     fly.Remove(f);
+            }
+            foreach (Enemy e in enemies.ToList())
+            {
+                if (e.IsAlive)
+                {
+                    if (e.CheckCollision(player))
+                        this.Exit();
+                    e.Update(Window);
+                }
+                else
+                    enemies.Remove(e);
             }
         }
 

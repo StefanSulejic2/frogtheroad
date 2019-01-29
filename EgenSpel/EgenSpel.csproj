@@ -41,6 +41,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="carL.cs" />
+    <Compile Include="carR.cs" />
     <Compile Include="Fly.cs" />
     <Compile Include="GameElements.cs" />
     <Compile Include="GameObject.cs" />
