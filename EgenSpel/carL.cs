@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
+    // Code for enemy that heads in Left direction
     class carL : Enemy
     {
         public carL(Texture2D texture, float X, float Y) : base(texture, X, Y, 3f, 0f)

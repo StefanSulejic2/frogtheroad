@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
-    /// <summary>
-    /// Här skrivs kod för att kunna skapa objekter och sprites (Ej fysiska)
-    /// </summary>
+    // Code for all objects in the game
     class GameObject
     {
-        /// <summary>
-        /// Skapar variabler för teturer.
-        /// </summary>
+        // Variable for textures
         protected Texture2D texture;
         protected Vector2 vector;
 
-        /// <summary>
-        /// Spritebatch för att kunna rita ut dem och deras position.
-        /// </summary>
+        // Position and spriteBatch for the objects.
         public GameObject(Texture2D texture, float X, float Y)
         {
             this.texture = texture;
@@ -38,9 +32,7 @@ namespace EgenSpel
         public float Height { get { return texture.Height; } }
     }
 
-    /// <summary>
-    /// Rörelse för sprites.
-    /// </summary>
+    // Movement identity for the objects
     class MovingObject : GameObject
     {
          protected Vector2 speed;
@@ -50,12 +42,12 @@ namespace EgenSpel
              this.speed.Y = speedY;
          }
     }
+    // Hitbox for objects thatare meant to be physical
     abstract class PhysicalObject : MovingObject
     {
         protected bool isAlive = true;
         public PhysicalObject (Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY)
         {
-
         }
 
         public bool CheckCollision(PhysicalObject other)

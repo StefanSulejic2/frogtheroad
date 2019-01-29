@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
+    // Code for enemy that heads in Right direction
     class carR:Enemy
     {
         public carR(Texture2D texture, float X, float Y) : base(texture, X, Y, 4f, 0f)
@@ -18,7 +19,6 @@ namespace EgenSpel
             vector.X += speed.X;
             if (vector.X > window.ClientBounds.Width - texture.Width || vector.X < 0)
                 speed.X *= -1;
-            //isAlive = false;
         }
     }
 }

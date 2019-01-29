@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
+    // Code for the point counter
     class PrintText
     {
         SpriteFont font;
 
+        // Print for the point couner
         public PrintText(SpriteFont font)
         {
             this.font = font;

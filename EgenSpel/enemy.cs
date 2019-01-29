@@ -8,14 +8,10 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
-    /// <summary>
-    /// Kod för att skapa fiender.
-    /// </summary>
+    // Base code for enemies.
     abstract class Enemy : PhysicalObject
     {
-        /// <summary>
-        /// Basvariabler för enemy
-        /// </summary>
+        // Enemy identity
         public Enemy(Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY)
         {
         }

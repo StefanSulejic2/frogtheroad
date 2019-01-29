@@ -7,147 +7,85 @@ using System.Linq;
 
 namespace EgenSpel
 {
-    /// <summary>
-    /// Det här är huvudkoden
-    /// </summary>
+    // Game1 is the class that makes the game run!
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
-        PrintText printText;
-        List<Enemy> enemies;
-        List<Fly> fly;
-        Texture2D flySprite;
 
+        // Game constructor
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Låter spelet initialisera.
-        /// Här kan du söka efter eventuella tjänster och ladda alla icke-grafiska
-        /// relaterat innehåll. Initialisering kommer att summeras genom några komponenter
-        /// och initiera dem också.
-        /// </summary>
+        // When game starts, Initialise is called to make the game run.
         protected override void Initialize()
         {
+            GameElements.currentState = GameElements.State.Menu;
+            GameElements.Initialize();
             base.Initialize();
-            fly = new List<Fly>();
         }
 
-        /// <summary>
-        /// LoadContent kommer att kallas en gång per spel och här laddas
-        /// all innehåll.
-        /// </summary>
+        // When game starts, LoadContent is called to load all sprites, sound files etc.
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player (Content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
-            printText = new PrintText(Content.Load<SpriteFont>("myFont"));
-            flySprite = Content.Load<Texture2D>("ladybugg");
-            enemies = new List<Enemy>();
-            Random random = new Random();
-            Texture2D tmpSprite = Content.Load<Texture2D>("carL");
-            for (int i = 0; i < 2; i++)
-            {
-                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
-                carL temp = new carL(tmpSprite, rndX, rndY);
-                enemies.Add(temp);
-            }
-            tmpSprite = Content.Load<Texture2D>("carR");
-            for (int i = 0; i < 2; i++)
-            {
-                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
-                carR temp = new carR(tmpSprite, rndX, rndY);
-                enemies.Add(temp);
-            }
+            GameElements.LoadContent(Content, Window);
         }
-
-        /// <summary>
-        /// UnloadContent kommer att kallas en gång per spel och är plats för avslutning av
-        /// game-specific innehåll.
-        /// </summary>
+        
+        // When the game is closed, UnloadContent unloads that aren't necessary anymore.
         protected override void UnloadContent()
         {
         }
-
-        /// <summary>
-        /// Låter spelet köra logik som att uppdatera världen,
-        /// kontrollerar kollisioner, samlar in och spelar ljud.
-        /// </summary>
+        
+        // Update loads in all necessary data to make the game function like movement controlls or gameTime
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-            player.Update(Window);
-            foreach (Enemy e in enemies)
-                e.Update(Window);
-            
+                this.Exit();
+
+            switch (GameElements.currentState)
+            {
+                // Run the game
+                case GameElements.State.Run:
+                    GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
+                    break;
+                // Quit the game
+                case GameElements.State.Quit:
+                    this.Exit();
+                    break;
+                // Menu
+                default:
+                    GameElements.currentState = GameElements.MenuUpdate();
+                    break;
+            }
             base.Update(gameTime);
-
-            Random random = new Random();
-            int newfly = random.Next(1, 200);
-            if (newfly == 1)
-            {
-                int rndX = random.Next(0, Window.ClientBounds.Width - flySprite.Width);
-                int rndY = random.Next(0, Window.ClientBounds.Height - flySprite.Height);
-                fly.Add(new Fly (flySprite, rndX, rndY, gameTime));
-            }
-            else
-            {
-            }
-
-            foreach (Fly f in fly.ToList())
-            {
-                if (f.IsAlive)
-                {
-                    f.Update(gameTime);
-
-                    if (f.CheckCollision(player))
-                    {
-                        fly.Remove(f);
-                        player.Points++;
-                    }
-                }
-                else
-                    fly.Remove(f);
-            }
-            foreach (Enemy e in enemies.ToList())
-            {
-                if (e.IsAlive)
-                {
-                    if (e.CheckCollision(player))
-                        this.Exit();
-                    e.Update(Window);
-                }
-                else
-                    enemies.Remove(e);
-            }
         }
 
-        /// <summary>
-        ///Detta kallas när spelet ska rita sig.
-        /// </summary>
+        // Draw works together with LoadContent and draws the loaded content (Like sprites, sound files, etc.)
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            player.Draw(spriteBatch);
-            foreach (Enemy e in enemies)
-                e.Draw(spriteBatch);
-            foreach (Fly f in fly)
-                f.Draw(spriteBatch);
-            printText.Print("Points:" + player.Points, spriteBatch, 0, 0);
+            // Same Switch as in Game1.Update except we're drawing the elements.
+            switch (GameElements.currentState)
+            {
+                case GameElements.State.Run:
+                    GameElements.RunDraw(spriteBatch);
+                    break;
+                case GameElements.State.Quit:
+                    this.Exit();
+                    break;
+                default:
+                    GameElements.MenuDraw(spriteBatch);
+                    break;
+            }
             spriteBatch.End();
-            base.Draw(gameTime);
 
-            
+            base.Draw(gameTime);
         }
     }
 }

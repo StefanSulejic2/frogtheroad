@@ -1,16 +1,11 @@
-﻿using System;
+﻿    using System;
 
 namespace EgenSpel
 {
 #if WINDOWS || LINUX
-    /// <summary>
-    /// The main class.
-    /// </summary>
+    // Main class
     public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {

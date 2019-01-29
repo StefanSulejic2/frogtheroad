@@ -9,26 +9,23 @@ using System.Threading.Tasks;
 
 namespace EgenSpel
 {
-    
-    /// <summary>
-    /// Det här är huvudkoden för spelaren.
-    /// </summary>
+    // Class with all player properties
     class Player : PhysicalObject
     {
+        // Base value for points
         int points = 0;
-        /// <summary>
-        /// Basvariabler för player.
-        /// </summary>
+
+        // Player identity
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY)
         {
         }
-        /// <summary>
-        /// Kod för att spelaren ska kunna röra på sig. Key bindings och velocity.
-        /// </summary>
-        public void Update(GameWindow window)
+        
+        // Player controlls
+        public void Update(GameWindow window, GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
-
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                isAlive = false;
             if (vector.X <= window.ClientBounds.Width - texture.Width && vector.X >= 0)
             {
                 if (keyboardState.IsKeyDown(Keys.Right))
@@ -52,6 +49,19 @@ namespace EgenSpel
             if (vector.Y > window.ClientBounds.Height - texture.Height)
                 vector.Y = window.ClientBounds.Height - texture.Height;
         }
+
+        //Method to reset the player to its default state.
+        public void Reset(float X, float Y, float speedX, float speedY)
+        {
+            vector.X = X;
+            vector.Y = Y;
+            speed.X = speedX;
+            speed.Y = speedY;
+            points = 0;
+            isAlive = true;
+        }
+
+        // Points for player
         public int Points { get { return points; } set { points = value; } }
     }
 }
