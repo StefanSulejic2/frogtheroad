@@ -20,6 +20,7 @@ namespace EgenSpel
         static List<Fly> fly;
         static Texture2D flySprite;
         static PrintText printText;
+        static Background background;
 
         public enum State { Menu, Run, Quit};
         public static State currentState;
@@ -36,7 +37,7 @@ namespace EgenSpel
             menuPos.Y = window.ClientBounds.Height / 2 - menuSprite.Height / 2;
 
             // Player
-            player = new Player(content.Load<Texture2D>("frogg"), 380, 400, 2.5f, 4.5f);
+            player = new Player(content.Load<Texture2D>("frogg"), 380, 420, 3f, 4.5f);
 
             // Collectable point and printed score
             flySprite = content.Load<Texture2D>("ladybugg");
@@ -46,21 +47,41 @@ namespace EgenSpel
             enemies = new List<Enemy>();
             Random random = new Random();
             Texture2D tmpSprite = content.Load<Texture2D>("carL");
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
                 carL temp = new carL(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
+            tmpSprite = content.Load<Texture2D>("carL");
+            for (int i = 0; i < 1; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                carL2 temp = new carL2(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
             tmpSprite = content.Load<Texture2D>("carR");
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
                 carR temp = new carR(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
+            tmpSprite = content.Load<Texture2D>("carR");
+            for (int i = 0; i < 1; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                carR2 temp = new carR2(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+
+            // Background
+            background = new Background(content.Load<Texture2D>("background"), window);
+
         }
         public static State MenuUpdate()
         {
@@ -76,6 +97,7 @@ namespace EgenSpel
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(menuSprite, menuPos, Color.White);
+            background.Draw(spriteBatch);
         }
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
         {
@@ -122,6 +144,9 @@ namespace EgenSpel
                     fly.Remove(f);
             }
 
+            //To spawn the background
+            background.Update(window);
+
             // If player is killed, return to menu
             if (!player.IsAlive)
             {
@@ -134,34 +159,55 @@ namespace EgenSpel
         public static void RunDraw(SpriteBatch spriteBatch)
         {
             // Drawing the sprites
+            background.Draw(spriteBatch);
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
             foreach (Fly f in fly)
                 f.Draw(spriteBatch);
+            
         }
         private static void Reset(GameWindow window, ContentManager content)
         {
-            player.Reset(380, 400, 2.5f, 4.5f);
+            player.Reset(380, 420, 3f, 4.5f);
 
             enemies.Clear();
             Random random = new Random();
             Texture2D tmpSprite = content.Load<Texture2D>("carL");
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
                 carL temp = new carL(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
+            tmpSprite = content.Load<Texture2D>("carL");
+            for (int i = 0; i < 1; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                carL2 temp = new carL2(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
             tmpSprite = content.Load<Texture2D>("carR");
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
                 carR temp = new carR(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
+            tmpSprite = content.Load<Texture2D>("carR");
+            for (int i = 0; i < 1; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                carR2 temp = new carR2(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+            fly.Clear();
+            flySprite = content.Load<Texture2D>("ladybugg");
+            printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
     }
 }

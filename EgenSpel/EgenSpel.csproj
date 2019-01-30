@@ -41,8 +41,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.cs" />
+    <Compile Include="BackgroundSprite.cs" />
     <Compile Include="carL.cs" />
+    <Compile Include="carL2.cs" />
     <Compile Include="carR.cs" />
+    <Compile Include="carR2.cs" />
     <Compile Include="Fly.cs" />
     <Compile Include="GameElements.cs" />
     <Compile Include="GameObject.cs" />

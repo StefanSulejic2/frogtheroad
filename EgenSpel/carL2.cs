@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace EgenSpel
 {
     // Code for enemy that heads in Left direction
-    class carL : Enemy
+    class carL2 : Enemy
     {
-        public carL(Texture2D texture, float X, float Y) : base(texture, X, 110, 3f, 0f)
+        public carL2(Texture2D texture, float X, float Y) : base(texture, X, 190, 3f, 0f)
         {
         }
         public override void Update(GameWindow window)
