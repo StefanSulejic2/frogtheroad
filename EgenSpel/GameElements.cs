@@ -21,7 +21,7 @@ namespace EgenSpel
         static Texture2D flySprite;
         static PrintText printText;
         static Background background;
-
+          
         public enum State { Menu, Run, Quit};
         public static State currentState;
         
@@ -160,12 +160,12 @@ namespace EgenSpel
         {
             // Drawing the sprites
             background.Draw(spriteBatch);
+            printText.Print("Points: " + player.Points, spriteBatch, 360, 0);
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
             foreach (Fly f in fly)
-                f.Draw(spriteBatch);
-            
+                f.Draw(spriteBatch);        
         }
         private static void Reset(GameWindow window, ContentManager content)
         {
