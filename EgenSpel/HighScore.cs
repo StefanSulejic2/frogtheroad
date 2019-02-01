@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -144,7 +144,7 @@ class HighScore
     // PrintDraw(), metod för att skriva ut listan. Det finns ingen
     // PrintUpdate() då det är en helt statisk text som skrivs ut.
     // =======================================================================
-    public void PrintDraw(SpriteBatch spriteBatch/*, SpriteFont font*/)
+    public void PrintDraw(SpriteBatch spriteBatch/*, SpriteFont font)
     {
         string text = "HIGHSCORE\n";
         foreach (HSItem h in highscore)
@@ -215,7 +215,7 @@ class HighScore
     // EnterDraw(), skriver ut de tecken spelaren har matat in av sitt namn
     // (om något) samt det tecken (av tre) som just nu är valt.
     // =======================================================================
-    public void EnterDraw(SpriteBatch spriteBatch/*, SpriteFont font*/)
+    public void EnterDraw(SpriteBatch spriteBatch/*, SpriteFont font)
     {
         string text = "ENTER NAME:" + name + currentChar;
         spriteBatch.DrawString(font, text, Vector2.Zero, Color.White);
@@ -311,4 +311,4 @@ class HighScore
         }
         conn.Close();
     }
-}
+}*/

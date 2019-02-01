@@ -22,7 +22,7 @@ namespace EgenSpel
         static Menu menu;
         static PrintText printText;
         static Background background;
-        static HighScore highScore;
+        /*static HighScore highScore;*/
         static SpriteFont font;
 
         public enum State { Menu, Run, HighScore, AddHS, Quit};
@@ -31,7 +31,7 @@ namespace EgenSpel
         public static void Initialize()
         {
             fly = new List<Fly>();
-            highScore = new HighScore(10, font);
+            /*highScore = new HighScore(10, font);*/
         }
         public static void LoadContent(ContentManager content, GameWindow window)
         {
@@ -41,11 +41,6 @@ namespace EgenSpel
             menu.AddItem(content.Load<Texture2D>("quit"), (int)State.Quit);
             // Background
             background = new Background(content.Load<Texture2D>("background"), window);
-
-            // Menu and its position
-            menuSprite = content.Load<Texture2D>("frogg");
-            menuPos.X = window.ClientBounds.Width / 2 - menuSprite.Width / 2;
-            menuPos.Y = window.ClientBounds.Height / 2 - menuSprite.Height / 2;
 
             // Player
             player = new Player(content.Load<Texture2D>("frogg"), 380, 420, 3f, 4.5f);
@@ -107,7 +102,6 @@ namespace EgenSpel
         }
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(menuSprite, menuPos, Color.White);
             background.Draw(spriteBatch);
             menu.Draw(spriteBatch);
         }
@@ -182,7 +176,7 @@ namespace EgenSpel
                 f.Draw(spriteBatch);        
         }
 
-        public static State AddHSUpdate(GameTime gameTime, GameWindow window, ContentManager content)
+        /*public static State AddHSUpdate(GameTime gameTime, GameWindow window, ContentManager content)
         {
 
 
@@ -211,7 +205,7 @@ namespace EgenSpel
 
             highScore.PrintDraw(spriteBatch);
         }
-
+        */
         private static void Reset(GameWindow window, ContentManager content)
         {
             player.Reset(380, 420, 3f, 4.5f);
