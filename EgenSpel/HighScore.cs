@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -144,9 +144,10 @@ class HighScore
     // PrintDraw(), metod för att skriva ut listan. Det finns ingen
     // PrintUpdate() då det är en helt statisk text som skrivs ut.
     // =======================================================================
-    public void PrintDraw(SpriteBatch spriteBatch/*, SpriteFont font)
+    public void PrintDraw(SpriteBatch spriteBatch/*, SpriteFont font*/)
     {
-        string text = "HIGHSCORE\n";
+
+        string text = "HIGHSCORE (Press B to return to Menu)\n";
         foreach (HSItem h in highscore)
             text += h.Name + " " + h.Points + "\n";
 
@@ -164,7 +165,7 @@ class HighScore
         // Vilka tecken som är möjliga:
         char[] key = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                        'L', 'M', 'N', 'O', 'P',  'Q', 'R', 'S', 'T', 'U',
-                       'V', 'X', 'Y', 'Z'};
+                       'V','W', 'X', 'Y', 'Z'};
 
 
         // Användaren trycker knappen nedåt, stega framlänges i key-vektorn:
@@ -215,7 +216,7 @@ class HighScore
     // EnterDraw(), skriver ut de tecken spelaren har matat in av sitt namn
     // (om något) samt det tecken (av tre) som just nu är valt.
     // =======================================================================
-    public void EnterDraw(SpriteBatch spriteBatch/*, SpriteFont font)
+    public void EnterDraw(SpriteBatch spriteBatch/*, SpriteFont font*/)
     {
         string text = "ENTER NAME:" + name + currentChar;
         spriteBatch.DrawString(font, text, Vector2.Zero, Color.White);
@@ -311,4 +312,4 @@ class HighScore
         }
         conn.Close();
     }
-}*/
+}

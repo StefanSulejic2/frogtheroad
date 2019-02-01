@@ -13,8 +13,6 @@ namespace EgenSpel
     // Class with all elements of the game
     static class GameElements
     {
-        static Texture2D menuSprite;
-        static Vector2 menuPos;
         static Player player;
         static List<Enemy> enemies;
         static List<Fly> fly;
@@ -22,7 +20,7 @@ namespace EgenSpel
         static Menu menu;
         static PrintText printText;
         static Background background;
-        /*static HighScore highScore;*/
+        static HighScore highScore;
         static SpriteFont font;
 
         public enum State { Menu, Run, HighScore, AddHS, Quit};
@@ -31,7 +29,7 @@ namespace EgenSpel
         public static void Initialize()
         {
             fly = new List<Fly>();
-            /*highScore = new HighScore(10, font);*/
+            highScore = new HighScore(10, font);
         }
         public static void LoadContent(ContentManager content, GameWindow window)
         {
@@ -84,7 +82,10 @@ namespace EgenSpel
                 carR2 temp = new carR2(tmpSprite, rndX, rndY);
                 enemies.Add(temp);
             }
-
+            SpriteFont tmpFont = content.Load<SpriteFont>("myFont");
+            printText = new PrintText(tmpFont);
+            highScore = new HighScore(5, tmpFont);
+           // highScore.LoadFromFile("hs.txt");
 
         }
         public static State MenuUpdate(GameTime gameTime)
@@ -153,17 +154,16 @@ namespace EgenSpel
             //To spawn the background
             background.Update(window);
 
-            // If player is killed, return to menu
+            // If player is killed, switch to Highscore screen
             if (!player.IsAlive)
             {
                 Reset(window, content);
                 return State.AddHS;
             }
-            // Stay in the game as default.
-            if (!player.IsAlive)
-                return State.Menu;
-            return State.Run;
+            
+                return State.Run;
         }
+
         public static void RunDraw(SpriteBatch spriteBatch)
         {
             // Drawing the sprites
@@ -176,17 +176,16 @@ namespace EgenSpel
                 f.Draw(spriteBatch);        
         }
 
-        /*public static State AddHSUpdate(GameTime gameTime, GameWindow window, ContentManager content)
+        public static State AddHSUpdate(GameTime gameTime, GameWindow window, ContentManager content)
         {
-
-
             if (highScore.EnterUpdate(gameTime, player.Points))
             {
-                highScore.SaveToDB();
+                highScore.SaveToFile("hs.txt");
                 Reset(window, content);
                 return State.HighScore;
             }
-            return State.AddHS;
+            else
+                return State.AddHS;
         }
         public static void AddHSDraw(SpriteBatch spriteBatch)
         {
@@ -196,7 +195,7 @@ namespace EgenSpel
         {
             background.Update(window);
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            if (keyboardState.IsKeyDown(Keys.B))
                 return State.Menu;
             return State.HighScore;
         }
@@ -205,7 +204,7 @@ namespace EgenSpel
 
             highScore.PrintDraw(spriteBatch);
         }
-        */
+        
         private static void Reset(GameWindow window, ContentManager content)
         {
             player.Reset(380, 420, 3f, 4.5f);
@@ -247,6 +246,7 @@ namespace EgenSpel
             fly.Clear();
             flySprite = content.Load<Texture2D>("ladybugg");
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
+            
         }
     }
 }
