@@ -19,18 +19,29 @@ namespace EgenSpel
         static List<Enemy> enemies;
         static List<Fly> fly;
         static Texture2D flySprite;
+        static Menu menu;
         static PrintText printText;
         static Background background;
-          
-        public enum State { Menu, Run, Quit};
+        static HighScore highScore;
+        static SpriteFont font;
+
+        public enum State { Menu, Run, HighScore, AddHS, Quit};
         public static State currentState;
         
         public static void Initialize()
         {
             fly = new List<Fly>();
+            highScore = new HighScore(10, font);
         }
         public static void LoadContent(ContentManager content, GameWindow window)
         {
+            menu = new Menu((int)State.Menu);
+            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.Run);
+            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.HighScore);
+            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.Quit);
+            // Background
+            background = new Background(content.Load<Texture2D>("background"), window);
+
             // Menu and its position
             menuSprite = content.Load<Texture2D>("frogg");
             menuPos.X = window.ClientBounds.Width / 2 - menuSprite.Width / 2;
@@ -79,25 +90,26 @@ namespace EgenSpel
                 enemies.Add(temp);
             }
 
-            // Background
-            background = new Background(content.Load<Texture2D>("background"), window);
 
         }
-        public static State MenuUpdate()
+        public static State MenuUpdate(GameTime gameTime)
         {
             // Keybindings
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.S))
                 return State.Run;
+            if (keyboardState.IsKeyDown(Keys.H))
+                return State.HighScore;
             if (keyboardState.IsKeyDown(Keys.A))
                 return State.Quit;
 
-            return State.Menu;
+            return (State)menu.Update(gameTime);
         }
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(menuSprite, menuPos, Color.White);
             background.Draw(spriteBatch);
+            menu.Draw(spriteBatch);
         }
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
         {
@@ -151,9 +163,11 @@ namespace EgenSpel
             if (!player.IsAlive)
             {
                 Reset(window, content);
-                return State.Menu;
+                return State.AddHS;
             }
             // Stay in the game as default.
+            if (!player.IsAlive)
+                return State.Menu;
             return State.Run;
         }
         public static void RunDraw(SpriteBatch spriteBatch)
@@ -167,6 +181,37 @@ namespace EgenSpel
             foreach (Fly f in fly)
                 f.Draw(spriteBatch);        
         }
+
+        public static State AddHSUpdate(GameTime gameTime, GameWindow window, ContentManager content)
+        {
+
+
+            if (highScore.EnterUpdate(gameTime, player.Points))
+            {
+                highScore.SaveToDB();
+                Reset(window, content);
+                return State.HighScore;
+            }
+            return State.AddHS;
+        }
+        public static void AddHSDraw(SpriteBatch spriteBatch)
+        {
+            highScore.EnterDraw(spriteBatch);
+        }
+        public static State HighScoreUpdate(GameWindow window)
+        {
+            background.Update(window);
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                return State.Menu;
+            return State.HighScore;
+        }
+        public static void HighScoreDraw(SpriteBatch spriteBatch)
+        {
+
+            highScore.PrintDraw(spriteBatch);
+        }
+
         private static void Reset(GameWindow window, ContentManager content)
         {
             player.Reset(380, 420, 3f, 4.5f);

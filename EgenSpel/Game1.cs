@@ -52,13 +52,16 @@ namespace EgenSpel
                 case GameElements.State.Run:
                     GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
                     break;
+                case GameElements.State.HighScore:
+                    GameElements.currentState = GameElements.HighScoreUpdate(Window);
+                    break;
                 // Quit the game
                 case GameElements.State.Quit:
                     this.Exit();
                     break;
                 // Menu
                 default:
-                    GameElements.currentState = GameElements.MenuUpdate();
+                    GameElements.currentState = GameElements.MenuUpdate(gameTime);
                     break;
             }
             base.Update(gameTime);
@@ -75,6 +78,9 @@ namespace EgenSpel
             {
                 case GameElements.State.Run:
                     GameElements.RunDraw(spriteBatch);
+                    break;
+                case GameElements.State.HighScore:
+                    GameElements.HighScoreDraw(spriteBatch);
                     break;
                 case GameElements.State.Quit:
                     this.Exit();
