@@ -36,9 +36,9 @@ namespace EgenSpel
         public static void LoadContent(ContentManager content, GameWindow window)
         {
             menu = new Menu((int)State.Menu);
-            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.Run);
-            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.HighScore);
-            menu.AddItem(content.Load<Texture2D>("frogg"), (int)State.Quit);
+            menu.AddItem(content.Load<Texture2D>("start"), (int)State.Run);
+            menu.AddItem(content.Load<Texture2D>("highscore"), (int)State.HighScore);
+            menu.AddItem(content.Load<Texture2D>("quit"), (int)State.Quit);
             // Background
             background = new Background(content.Load<Texture2D>("background"), window);
 
