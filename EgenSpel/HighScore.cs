@@ -239,7 +239,7 @@ class HighScore
     // =======================================================================
     // SaveToFile(), spara till fil.
     // =======================================================================
-    public void SaveToDB()
+    public void SaveToDB() //TL-190203 Nu använder ni inte databasen. Testa först att lyckas med filsparningen. Testa sedan att fixa databasen.
     {
         string connStr = "server=185.189.48.15; user=prg_user; database=prg_db; port=3306; password=wCoLyemcmI";
         MySqlConnection conn = new MySqlConnection(connStr);
@@ -248,7 +248,7 @@ class HighScore
         {
 
             conn.Open();
-            string strGame = "t-space";
+            string strGame = "t-space"; //TL-190203 Byt ut namnet t-space till ert eget namn.
 
             foreach (HSItem item in highscore)
             {
@@ -295,13 +295,15 @@ class HighScore
         {
             conn.Open();
 
-            string sql = "SELECT name, score FROM scores WHERE game='t-space'";
+            string sql = "SELECT name, score FROM scores WHERE game='t-space'"; //TL-190203 Byt ut namnet t-space till ert eget namn.
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                Console.WriteLine(rdr[0] + "--" + rdr[1]);
+                Console.WriteLine(rdr[0] + "--" + rdr[1]); //TL-190203 Ni har ingen console att skriva i. Använd istället följande två rader.
+                //HSItem temp = new HSItem(rdr[0].ToString(), int.Parse(rdr[1].ToString()));
+                //highscore.Add(temp);
             }
             rdr.Close();
         }

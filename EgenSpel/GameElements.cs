@@ -85,7 +85,7 @@ namespace EgenSpel
             SpriteFont tmpFont = content.Load<SpriteFont>("myFont");
             printText = new PrintText(tmpFont);
             highScore = new HighScore(5, tmpFont);
-           // highScore.LoadFromFile("hs.txt");
+            highScore.LoadFromFile("hs.txt"); 
 
         }
         public static State MenuUpdate(GameTime gameTime)
@@ -157,7 +157,7 @@ namespace EgenSpel
             // If player is killed, switch to Highscore screen
             if (!player.IsAlive)
             {
-                Reset(window, content);
+                Reset(window, content); //TL-190203 Logiskt fel! Vad händer om ni nollställer poängen innan ni sparar den?
                 return State.AddHS;
             }
             
